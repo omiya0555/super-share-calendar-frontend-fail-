@@ -1,14 +1,38 @@
 <template>
-  <router-view />
+  <transition
+    enter-active-class="transform transition-transform duration-500 ease-out"
+    enter-from-class="translate-x-full"
+    enter-to-class="translate-x-0"
+    leave-active-class="transform transition-transform duration-500 ease-in"
+    leave-from-class="translate-x-0"
+    leave-to-class="translate-x-full"
+    mode="out-in"
+  >
+    <div id="app" class="flex flex-col min-h-screen">
+      <NavBar />
+      <main class="flex-grow">
+        <router-view />
+      </main>
+      <AppFooter />
+    </div>
+  </transition>
+
 </template>
 
 <script>
+import NavBar from './components/NavBar.vue';
+import AppFooter from './components/AppFooter.vue';
+
 export default {
   name: 'App',
   data() {
     return {
-      isAuthenticated: !!localStorage.getItem('authToken'),
+      isAuthenticated: !!localStorage.getItem('auth_token'),
     };
+  },
+  components:{
+    NavBar,
+    AppFooter,
   },
   watch: {
     isAuthenticated(newValue) {
@@ -24,7 +48,7 @@ export default {
   },
   methods: {
     checkAuth() {
-      this.isAuthenticated = !!localStorage.getItem('authToken');
+      this.isAuthenticated = !!localStorage.getItem('auth_token');
     },
   },
 };

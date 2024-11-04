@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import axios from "../plugins/axios";
+import apiClient from "../plugins/axios";
+import { useRouter } from 'vue-router';
 
 export default {
     data() {
@@ -21,15 +22,32 @@ export default {
             errorMessage: "",
         };
     },
+    setup() {
+        const router = useRouter();
+        return { router };
+    },
     methods: {
         async login() {
             try {
-                const response = await axios.post("/login", {
+                const response = await apiClient.post("http://localhost/api/login", {
                     email: this.email,
                     password: this.password,
                 });
-                localStorage.setItem("authToken", response.data.token);
-                this.$router.push("/");
+
+                // 認証情報を保存
+                const token = response.data.token;
+                const expiresAt = new Date();
+                expiresAt.setHours(expiresAt.getHours() + 1);
+                
+                // トークンと有効期限を保存
+                localStorage.setItem('auth_token', token);
+                localStorage.setItem('expires_at', expiresAt.toISOString());
+
+                // リダイレクト
+                this.router.push('/').then(() => {
+                    window.location.reload(); // 状態を強制的に再描画させる
+                });
+
             } catch (error) {
                 this.errorMessage = "ログインに失敗しました";
             }

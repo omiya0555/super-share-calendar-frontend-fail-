@@ -23,7 +23,7 @@ const router = createRouter({
 
 // ナビゲーションガードの設定
 router.beforeEach((to, from, next) => {
-    const isAuthenticated = !!localStorage.getItem('authToken');
+    const isAuthenticated = !!localStorage.getItem('auth_token');
     if(to.matched.some(record=> record.meta.requiresAuth) && !isAuthenticated){
         next('/login');
     } else {

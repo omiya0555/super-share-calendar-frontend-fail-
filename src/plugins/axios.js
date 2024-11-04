@@ -1,15 +1,22 @@
 import axios from 'axios';
 
-const instance = axios.create({
-    baseURL: 'http://localhost/api', // Laravel APIのURL
-    headers: { 'Content-Type': 'application/json' },
+// Axiosインスタンスを作成
+const apiClient = axios.create({
+    baseURL: 'http://localhost/api',
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
-// リクエスト時に認証トークンを追加
-instance.interceptors.request.use(config => {
-    const token = localStorage.getItem('authToken');
-    if (token) config.headers.Authorization = `Bearer ${token}`;
+// リクエストに認証トークンを追加するインターセプターを設定
+apiClient.interceptors.request.use(config => {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+    }
     return config;
+}, error => {
+    return Promise.reject(error);
 });
 
-export default instance;
+export default apiClient;

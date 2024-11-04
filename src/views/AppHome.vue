@@ -1,16 +1,16 @@
 <template>
-    <div>
-        <h1>ホーム</h1>
-        <button @click="logout">ログアウト</button>
-    </div>
+    <calendar-event></calendar-event>
 </template>
 
 <script>
+import CalendarEvent from '@/components/CalendarEvent.vue';
+
 export default {
+    components: { CalendarEvent },
     methods: {
         logout() {
             if(confirm('ログアウトしますか？')){
-                localStorage.removeItem('authToken');
+                localStorage.removeItem('auth_token');
                 this.$router.push('/login');
             }
         },
