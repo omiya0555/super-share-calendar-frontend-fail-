@@ -9,8 +9,10 @@
 export default {
     methods: {
         logout() {
-            localStorage.removeItem('authToken');
-            this.$router.push('/login');
+            if(confirm('ログアウトしますか？')){
+                localStorage.removeItem('authToken');
+                this.$router.push('/login');
+            }
         },
     },
 };
