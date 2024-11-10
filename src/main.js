@@ -2,6 +2,8 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import axios from './plugins/axios';
+import Pusher from 'pusher-js'
+import Echo from 'laravel-echo';
 import './assets/tailwind.css'; 
 
 // トークンの有効期限を確認
@@ -18,6 +20,24 @@ if (token && expiresAt) {
         localStorage.removeItem('expires_at');
     }
 }
+
+// Pusherの設定
+window.Pusher = Pusher;
+
+// Laravel Echo の設定
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: "a3793a14555006c29e72",
+    cluster: "ap3",
+    forceTLS: true,
+    authEndpoint: 'http://localhost/api/broadcasting/auth/', // 認証エンドポイント
+    auth: {
+        headers: {
+            Authorization: `Bearer ${token}`, // 認証トークンを付与
+        },
+    },
+});
+
 
 createApp(App)
     .use(router)

@@ -1,36 +1,9 @@
 <template>
 
     <div class="flex justify-evenly mt-10">
-        <div class="events ml-8 mr-4 p-4  flex-grow border">
-            <p>Events</p>
-            <div v-for="event in events" :key="event.id">
-                <p class="p-2 hover:shadow-md transition">{{ event.title }}</p>
-            </div>
-            <hr class="mt-4">
-            <p class="mt-8">Filters</p>
-            <div>
-                <div class="flex">
-                    <label for="filter1" class="p-2">test</label>
-                    <input id="filter1" type="checkbox" class="mr-4">
-
-                    <label for="filter2" class="p-2">test</label>
-                    <input id="filter2" type="checkbox" class="mr-4">
-                    
-                    <label for="filter3" class="p-2">test</label>
-                    <input id="filter3" type="checkbox" class="mr-4">
-                    
-                    <label for="filter4" class="p-2">test</label>
-                    <input id="filter4" type="checkbox">
-                </div>
-                <button type="submit" 
-                    class="w-full h-8 border-gray-900 bg-gray-400 hover:bg-gray-600 transition">
-                    検索
-                </button>
-            </div>
-            <hr class="mt-8">
-        </div>
+        <EventList v-model:events="events" class="w-64" />
         <FullCalendar ref="fullCalendar" :options="calendarOptions" @dateClick="handleDateClick" @eventClick="handleEventClick"
-            class="w-1/2 ml-4 mr-8 p-8 border"/> 
+            class=" w-full ml-4 mr-8 p-8 border"/> 
     </div>
 
     <!-- イベント作成・編集モーダル -->
@@ -51,11 +24,13 @@ import interactionPlugin from "@fullcalendar/interaction";
 import jaLocale from "@fullcalendar/core/locales/ja";
 import apiClient from "../plugins/axios";
 import EventModal from "./EventModal.vue";
+import EventList from "./EventList.vue";
 
 export default {
     components: {
         FullCalendar,
         EventModal,
+        EventList,
     },
     data() {
         return {

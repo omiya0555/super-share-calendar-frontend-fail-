@@ -49,11 +49,12 @@ export default {
         const isOpen = ref(false);
 
         const logout = () => {
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('expires_at');
-            router.push('/login').then(() => window.location.reload());
+            if(confirm('ログアウトしますか？')){
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('expires_at');
+                router.push('/login').then(() => window.location.reload());
+            }
         };
-
         return { isOpen, logout };
     },
 };
